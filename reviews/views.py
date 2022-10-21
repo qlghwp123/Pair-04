@@ -90,3 +90,13 @@ def comments_create(req, review_pk):
         comment.save()
 
     return redirect('reviews:detail')
+
+
+@login_required
+def comments_delete(req, review_pk, comment_pk):
+    comment = Comment.objects.get(id=comment_pk)
+
+    if req.user == comment.user:
+        comment.delete()
+
+    return redirect('reviews:detail')
