@@ -10,7 +10,9 @@ def create(req):
         form = ReviewForm(req.POST)
 
         if form.is_valid():
-            form.save()
+            data = form.save(commit=False)
+            data.user = req.user
+            data.save()
 
             return redirect('reviews:index')
 

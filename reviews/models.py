@@ -4,7 +4,7 @@ from django.conf import settings
 
 # Create your models here.
 class Review(models.Model):
-    user = models.CharField(max_length=20)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = models.TextField()
     movie_name = models.CharField(max_length=30)
