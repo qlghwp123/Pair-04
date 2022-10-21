@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load 'django_bootstrap5' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% comment %} need to be rewrite {% endcomment %}
+<a href="{% url 'reviews:update' %}" class="btn btn-success">update</a>
+<a href="{% url 'reviews:delete' %}" class="btn btn-danger">delete</a>
+
+{% else %}
+
+{% comment %} need to be rewrite {% endcomment %}
+<a href="{% url 'reviews:create' %}" class="btn btn-primary">write comment</a>
+
+{% comment %} comment list {% endcomment %}
+
+{% endif %}
+
+{% endblock content %}

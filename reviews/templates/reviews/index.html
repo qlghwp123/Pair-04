@@ -15,7 +15,7 @@
         {% for i in data %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ i.title }}</td>
+            <td><a href="{% url 'reviews:detail' i.id %}" class="text-decoration-none">{{ i.title }}</td>
             <td>{{ i.movie_name }}</td>
             <td>{{ i.grade }}</td>
         </tr>
