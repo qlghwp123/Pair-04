@@ -14,12 +14,6 @@
 <p>{{ data.content }}</p>
 
 {% comment %} need to be rewrite {% endcomment %}
-<a href="{% url 'reviews:update' %}" class="btn btn-success">update</a>
-<a href="{% url 'reviews:delete' %}" class="btn btn-danger">delete</a>
-
-{% else %}
-
-{% comment %} need to be rewrite {% endcomment %}
 <a href="{% url 'reviews:create' %}" class="btn btn-primary">write comment</a>
 
 <table class="table">
@@ -28,6 +22,9 @@
         <th scope="col">#</th>
         <th scope="col">username</th>
         <th scope="col">content</th>
+        {% if request.user == comment.user %}
+            <th scope="col">feature</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -36,6 +33,12 @@
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ i.user.username }}</td>
             <td>{{ i.user.content }}</td>
+            {% if request.user == comment.user %}
+            <td>
+                <a href="{% url 'reviews:comments_update' %}" class="btn btn-success">update</a>
+                <a href="{% url 'reviews:comments_delete' %}" class="btn btn-danger">delete</a>
+            </td>
+            {% endif %}
         {% endfor %}
       </tr>
     </tbody>
@@ -47,6 +50,13 @@
     {% bootstrap_form form %}
     {% bootstrap_button button_type="submit" button_class="btn-primary" content="submit" %}
 </form>
+
+{% if request.user == data.user %}
+
+<a href="{% url 'reviews:update' %}" class="btn btn-success">update</a>
+<a href="{% url 'reviews:delete' %}" class="btn btn-danger">delete</a>
+
+{% endif %}
 
 {% endif %}
 
