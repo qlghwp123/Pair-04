@@ -58,3 +58,10 @@ def update(req, review_pk):
     }
 
     return render(req, 'reviews/create.html', context)
+
+
+@login_required
+def delete(req, review_pk):
+    Review.objects.get(id=review_pk).delete()
+
+    return redirect('reviews:detail')
