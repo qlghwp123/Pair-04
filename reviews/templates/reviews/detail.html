@@ -6,6 +6,13 @@
 
 {% if request.user.is_authenticated %}
 
+<h2>title : {{ data.title }}</h2>
+<p>movie_name : {{ data.movie_name }}</p>
+<p>author : {{ data.user }}</p>
+<p>grade : {{ data.grade }}</p>
+<hr/>
+<p>{{ data.content }}</p>
+
 {% comment %} need to be rewrite {% endcomment %}
 <a href="{% url 'reviews:update' %}" class="btn btn-success">update</a>
 <a href="{% url 'reviews:delete' %}" class="btn btn-danger">delete</a>
@@ -15,7 +22,31 @@
 {% comment %} need to be rewrite {% endcomment %}
 <a href="{% url 'reviews:create' %}" class="btn btn-primary">write comment</a>
 
-{% comment %} comment list {% endcomment %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">username</th>
+        <th scope="col">content</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for i in comments %}
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ i.user.username }}</td>
+            <td>{{ i.user.content }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+
+
+<form action="{% url 'reviews:comments_create' data.id %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" button_class="btn-primary" content="submit" %}
+</form>
 
 {% endif %}
 
