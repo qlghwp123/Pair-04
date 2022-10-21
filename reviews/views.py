@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
-from .forms import ReviewForm
-from .models import Review
+from .forms import ReviewForm, CommentForm
+from .models import Review, Comment
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -34,8 +34,16 @@ def index(req):
 @login_required
 def detail(req, review_pk):
     data = Review.objects.get(id=review_pk)
+    form = CommentForm()
+    comments = Comment.objects.all()
 
-    return render(req, 'reviews/detail.html', {'data': data})
+    context = {
+        'data': data,
+        'form': form,
+        'comments': comments
+    }
+
+    return render(req, 'reviews/detail.html', context)
 
 
 @login_required
@@ -63,5 +71,20 @@ def update(req, review_pk):
 @login_required
 def delete(req, review_pk):
     Review.objects.get(id=review_pk).delete()
+
+    return redirect('reviews:detail')
+
+
+@login_required
+def comments_create(req, review_pk):
+    data = Comment.objects.get(id=review_pk)
+    form = CommentForm(req.POST)
+
+    if form.is_valid():
+        # 'commit=False' option means return instance don't be saved
+        comment = form.save(commit=False)
+        comment.review = data
+        comment.user = req.user
+        comment.save()
 
     return redirect('reviews:detail')
