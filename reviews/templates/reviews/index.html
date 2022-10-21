@@ -21,6 +21,10 @@
         </tr>
         {% endfor %}
     </tbody>
-  </table>
+</table>
+
+<div class="d-flex justify-content-end">
+  <a href="{% url 'reviews:create' %}" class="btn btn-primary">create</a>
+</div>
 
 {% endblock content %}

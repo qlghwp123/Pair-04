@@ -37,7 +37,7 @@ def index(req):
 def detail(req, review_pk):
     data = Review.objects.get(id=review_pk)
     form = CommentForm()
-    comments = Comment.objects.all()
+    comments = Comment.objects.filter(review=data)
 
     context = {
         'data': data,
@@ -58,7 +58,7 @@ def update(req, review_pk):
         if form.is_valid():
             form.save()
 
-            return redirect('reviews:detail')
+            return redirect('reviews:detail', review_pk)
 
     else:
         form = ReviewForm(instance=data)
@@ -74,12 +74,12 @@ def update(req, review_pk):
 def delete(req, review_pk):
     Review.objects.get(id=review_pk).delete()
 
-    return redirect('reviews:detail')
+    return redirect('reviews:index')
 
 
 @login_required
 def comments_create(req, review_pk):
-    data = Comment.objects.get(id=review_pk)
+    data = Review.objects.get(id=review_pk)
     form = CommentForm(req.POST)
 
     if form.is_valid():
@@ -89,7 +89,7 @@ def comments_create(req, review_pk):
         comment.user = req.user
         comment.save()
 
-    return redirect('reviews:detail')
+    return redirect('reviews:detail', review_pk)
 
 
 @login_required
@@ -99,4 +99,4 @@ def comments_delete(req, review_pk, comment_pk):
     if req.user == comment.user:
         comment.delete()
 
-    return redirect('reviews:detail')
+    return redirect('reviews:detail', review_pk)

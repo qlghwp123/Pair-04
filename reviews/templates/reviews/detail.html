@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load 'django_bootstrap5' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 
@@ -10,53 +10,54 @@
 <p>movie_name : {{ data.movie_name }}</p>
 <p>author : {{ data.user }}</p>
 <p>grade : {{ data.grade }}</p>
+
 <hr/>
 <p>{{ data.content }}</p>
+<hr/>
 
-{% comment %} need to be rewrite {% endcomment %}
-<a href="{% url 'reviews:create' %}" class="btn btn-primary">write comment</a>
+{% if request.user == data.user %}
 
-<table class="table">
+<div class="d-flex justify-content-end mt-5">
+  <a href="{% url 'reviews:update' data.id %}" class="btn btn-success me-3">update</a>
+  <a href="{% url 'reviews:delete' data.id %}" class="btn btn-danger">delete</a>
+</div>
+
+{% endif %}
+
+<h3 class="mt-5">Comment</h3>
+
+<table class="table mb-5">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">username</th>
         <th scope="col">content</th>
-        {% if request.user == comment.user %}
-            <th scope="col">feature</th>
-        {% endif %}
+        <th scope="col">feature</th>
       </tr>
     </thead>
     <tbody>
+      {% for i in comments %}
       <tr>
-        {% for i in comments %}
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ i.user.username }}</td>
-            <td>{{ i.user.content }}</td>
-            {% if request.user == comment.user %}
-            <td>
-                <a href="{% url 'reviews:comments_update' %}" class="btn btn-success">update</a>
-                <a href="{% url 'reviews:comments_delete' %}" class="btn btn-danger">delete</a>
-            </td>
-            {% endif %}
-        {% endfor %}
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ i.user.username }}</td>
+        <td>{{ i.content }}</td>
+        {% if request.user == i.user %}
+        <td>
+            <a href="{% url 'reviews:comments_delete' data.id i.id %}" class="btn btn-danger">delete</a>
+        </td>
+        {% endif %}
       </tr>
+      {% endfor %}
     </tbody>
-  </table>
-
+</table>
 
 <form action="{% url 'reviews:comments_create' data.id %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
-    {% bootstrap_button button_type="submit" button_class="btn-primary" content="submit" %}
+    <div class="d-flex justify-content-end">
+      {% bootstrap_button button_type="submit" button_class="btn-primary" content="submit" %}
+    </div>
 </form>
-
-{% if request.user == data.user %}
-
-<a href="{% url 'reviews:update' %}" class="btn btn-success">update</a>
-<a href="{% url 'reviews:delete' %}" class="btn btn-danger">delete</a>
-
-{% endif %}
 
 {% endif %}
 

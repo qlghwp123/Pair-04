@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load 'django_bootstrap5' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 
@@ -10,6 +10,6 @@
 {% bootstrap_button button_type="submit" button_class="btn-primary" content="login" %}
 </form>
 
-<a href="{% url 'accounts:signup' %}" class="btn btn-primary">signup</a>
+<a href="{% url 'accounts:signup' %}" class="btn btn-primary mt-3">signup</a>
 
 {% endblock content %}
