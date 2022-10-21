@@ -4,10 +4,12 @@
 
 {% block content %}
 
+{% comment %} if statements need to be located here depend on urls {% endcomment %}
+
 <form action="" method="POST">
 {% csrf_token %}
 {% bootstrap_form form %}
-{% bootstrap_button button_type="submit" button_class="btn-primary" content="create" %}
+{% bootstrap_button button_type="submit" button_class="btn-primary" content="submit" %}
 </form>
 
 {% endblock content %}
