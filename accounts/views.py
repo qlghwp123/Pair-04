@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(req):
@@ -41,4 +41,11 @@ def login(req):
         'form': form
     }
 
-    return render(req, 'accounts/login.html', context)    
+    return render(req, 'accounts/login.html', context)
+
+
+@login_required
+def logout(req):
+    auth_logout(req)
+
+    return redirect('accounts:login')
